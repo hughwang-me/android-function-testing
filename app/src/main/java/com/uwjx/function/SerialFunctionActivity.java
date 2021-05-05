@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.uwjx.function.cmd.Hoses;
-import com.uwjx.function.cmd.QueryRealTimeOilingCmd;
+import com.uwjx.function.event.ProbeCmdEvent;
+import com.uwjx.function.probe.ProbeCmdQueue;
 import com.uwjx.function.probe.ProbeOpen24VCmd;
 import com.uwjx.function.probe.ProbeOpenRelayCmd;
 import com.uwjx.function.probe.ProbeQueryLiquidLevelCmd;
@@ -24,6 +24,10 @@ import com.uwjx.serial.SerialPortManager;
 import com.uwjx.serial.listener.OnOpenSerialPortListener;
 import com.uwjx.serial.listener.OnSerialPortDataListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 
 import butterknife.BindView;
@@ -35,6 +39,7 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
     public static final String DEVICE = "device-data";
 
     SerialPortManager mSerialPortManager;
+    ProbeCmdQueue probeCmdQueue = ProbeCmdQueue.getInstance();
 
     @BindView(R.id.probe_device_info)
     TextView probe_device_info;
@@ -70,25 +75,57 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
         Log.i("hugh", "onCreate: openSerialPort = " + openSerialPort);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void cmdEvent(ProbeCmdEvent probeCmdEvent){
+        Log.e("hugh" , "eventbus 接收到 probe 指令 : " + probeCmdEvent.getCmd());
+        probe_receive_cmd.append(DateUtil.getFormat() + " \t " + probeCmdEvent.getCmd() + "\n");
+        //            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    probe_send_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
+//                }
+//            });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        probeCmdQueue.startProcess();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        probeCmdQueue.stopProcess();
+    }
+
     OnSerialPortDataListener serialPortDataListener = new OnSerialPortDataListener() {
         @Override
         public void onDataReceived(byte[] bytes) {
 //            Log.i(TAG, "onDataReceived [ byte[] ]: " + Arrays.toString(bytes));
 //            Log.i(TAG, "onDataReceived [ String ]: " + new String(bytes));
             Log.e("hugh", "接收到来自设备的16进制数据 = " + ByteUtils.genHexStr(bytes));
+
+            probeCmdQueue.add(ByteUtils.genHexStr(bytes));
+
 //            cmdQueue.add(ByteUtils.genHexStr(bytes));
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    probe_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
-                }
-            });
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    probe_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
+//                }
+//            });
         }
 
         @Override
         public void onDataSent(byte[] bytes) {
 //            Log.i(TAG, "onDataSent [ byte[] ]: " + Arrays.toString(bytes));
             Log.e("hugh", "数据下发到设备成功 [ String ]: " + ByteUtils.genHexStr(bytes));
+
+//            probeCmdQueue.add(ByteUtils.genHexStr(bytes));
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
