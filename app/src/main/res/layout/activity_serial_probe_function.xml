@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/probe_hose_1_status"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,8 +36,38 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 查询液位"
-            android:id="@+id/probe_query_liquid_level"/>
+            android:text="probe 查询液位(探针1号)"
+            android:id="@+id/probe_query_liquid_level_1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="probe 查询液位(探针2号)"
+            android:id="@+id/probe_query_liquid_level_2"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="probe 查询液位(探针3号)"
+            android:id="@+id/probe_query_liquid_level_3"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="probe 查询液位(探针4号)"
+            android:id="@+id/probe_query_liquid_level_4"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="probe 查询液位(所有)"
+            android:id="@+id/probe_query_liquid_level_all"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"

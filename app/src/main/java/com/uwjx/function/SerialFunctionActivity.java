@@ -11,7 +11,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.uwjx.function.cmd.Hoses;
 import com.uwjx.function.cmd.QueryRealTimeOilingCmd;
+import com.uwjx.function.probe.ProbeOpen24VCmd;
+import com.uwjx.function.probe.ProbeOpenRelayCmd;
 import com.uwjx.function.probe.ProbeQueryLiquidLevelCmd;
+import com.uwjx.function.probe.ProbeQuerySnCmd;
+import com.uwjx.function.probe.ProbeQuerySoftwareVersionCmd;
+import com.uwjx.function.probe.ProbeResetCmd;
 import com.uwjx.function.util.ByteUtils;
 import com.uwjx.function.util.DateUtil;
 import com.uwjx.serial.Device;
@@ -152,68 +157,100 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
                 .show();
     }
 
-    @OnClick(R.id.probe_query_liquid_level)
-    public void probe_query_liquid_level(){
+    @OnClick(R.id.probe_query_liquid_level_1)
+    public void probe_query_liquid_level_1(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发30指令[查询液位 1] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    @OnClick(R.id.probe_query_liquid_level_2)
+    public void probe_query_liquid_level_2(){
+        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(2);
+        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发30指令[查询液位 2] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    @OnClick(R.id.probe_query_liquid_level_3)
+    public void probe_query_liquid_level_3(){
+        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(3);
+        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发30指令[查询液位 3] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    @OnClick(R.id.probe_query_liquid_level_4)
+    public void probe_query_liquid_level_4(){
+        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(4);
+        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发30指令[查询液位 4] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    @OnClick(R.id.probe_query_liquid_level_all)
+    public void probe_query_liquid_level(){
+        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(0);
+        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发30指令[查询液位 all] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_query_software_version)
     public void probe_query_software_version(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        ProbeQuerySoftwareVersionCmd querySoftwareVersionCmd = new ProbeQuerySoftwareVersionCmd();
+        byte[] cmd = querySoftwareVersionCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发querySoftwareVersionCmd指令[查询软件版本号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_query_sn)
     public void probe_query_sn(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        ProbeQuerySnCmd querySnCmd = new ProbeQuerySnCmd();
+        byte[] cmd = querySnCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发querySnCmd指令[查询序列号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_open_24v)
     public void probe_open_24v(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        ProbeOpen24VCmd open24VCmd = new ProbeOpen24VCmd(1);
+        byte[] cmd = open24VCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发open24VCmd指令[开启 24V] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_open_relay)
     public void probe_open_relay(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        ProbeOpenRelayCmd openRelayCmd = new ProbeOpenRelayCmd(1);
+        byte[] cmd = openRelayCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发openRelayCmd指令[开启继电器] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_pre_upgrade)
     public void probe_pre_upgrade(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+//        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
+//        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+//        mSerialPortManager.sendBytes(cmd);
+//        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_upgrade)
     public void probe_upgrade(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+//        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
+//        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+//        mSerialPortManager.sendBytes(cmd);
+//        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.probe_reset)
     public void probe_reset(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+        ProbeResetCmd resetCmd = new ProbeResetCmd();
+        byte[] cmd = resetCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发resetCmd指令[复位指令] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
 }
