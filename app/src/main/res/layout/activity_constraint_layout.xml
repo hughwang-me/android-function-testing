@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:id="@+id/left_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintWidth_percent="0.2"
+        app:layout_constraintVertical_bias="0.5"/>
+
+    <TextView
+        app:layout_constraintStart_toEndOf="@+id/left_view"
+        app:layout_constraintLeft_toRightOf="@+id/left_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:text="A"
+        android:id="@+id/aaa"
+        android:textSize="80sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/purple_700"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/aaa"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:text="B"
+        android:textSize="80sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/teal_200"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
