@@ -118,6 +118,9 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
 
             probeCmdQueue.add(ByteUtils.genHexStr(bytes));
 
+
+
+
 //            cmdQueue.add(ByteUtils.genHexStr(bytes));
 //            runOnUiThread(new Runnable() {
 //                @Override
@@ -137,7 +140,25 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    probe_send_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
+                    String sentMsg = DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n";
+                    String originSentMSg = "";
+                    if(probe_receive_cmd.getText() != null ){
+                        originSentMSg= probe_send_cmd.getText().toString();
+                    }
+
+                    probe_send_cmd.setText(sentMsg + originSentMSg);
+//                    probe_send_cmd.append();
+
+
+
+                    String msg = "-----------------------------------------------------------------\n";
+
+                    String originMSg = "";
+                    if(probe_receive_cmd.getText() != null ){
+                        originMSg= probe_receive_cmd.getText().toString();
+                    }
+
+                    probe_receive_cmd.setText(msg + originMSg);
                 }
             });
         }
