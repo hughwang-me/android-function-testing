@@ -78,7 +78,15 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
     public void cmdEvent(ProbeCmdEvent probeCmdEvent){
         Log.e("hugh" , "eventbus 接收到 probe 指令 : " + probeCmdEvent.getCmd());
-        probe_receive_cmd.append(DateUtil.getFormat() + " \t " + probeCmdEvent.getCmd() + "\n");
+        String msg = DateUtil.getFormat() + " \t " + probeCmdEvent.getCmd() + "\n";
+
+        String originMSg = "";
+        if(probe_receive_cmd.getText() != null ){
+            originMSg= probe_receive_cmd.getText().toString();
+        }
+
+        probe_receive_cmd.setText(msg + originMSg);
+
         //            runOnUiThread(new Runnable() {
 //                @Override
 //                public void run() {
