@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.uwjx.function.event.ProbeCmdEvent;
+import com.uwjx.function.event.ProbePreUpgradeEvent;
 import com.uwjx.function.event.ProbeUpgradeEvent;
 import com.uwjx.function.probe.ProbeCmdQueue;
 import com.uwjx.function.probe.ProbeOpen24VCmd;
@@ -306,6 +307,27 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
 
     @OnClick(R.id.probe_pre_upgrade)
     public void probe_pre_upgrade(){
+        Log.e("hugh" , "点击下发 ProbePreUpgradeEvent 指令 " );
+        EventBus.getDefault().post(new ProbePreUpgradeEvent());
+    }
+
+    @OnClick(R.id.probe_upgrade)
+    public void probe_upgrade(){
+        Log.e("hugh" , "点击下发 ProbeUpgradeEvent 指令 " );
+        EventBus.getDefault().post(new ProbeUpgradeEvent());
+    }
+
+    @OnClick(R.id.probe_reset)
+    public void probe_reset(){
+        ProbeResetCmd resetCmd = new ProbeResetCmd();
+        byte[] cmd = resetCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发resetCmd指令[复位指令] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void preUpgradeEvent(ProbePreUpgradeEvent preUpgradeEvent) {
+        Log.e("hugh", "eventbus 接收到 preUpgradeEvent 指令 ");
 
         String file = "/storage/udisk/ATG.bin";
 
@@ -325,29 +347,11 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
             e.printStackTrace();
         }
 
-
-
-
         ProbePreUpgradeCmd preUpgradeCmd = new ProbePreUpgradeCmd(lengthByte);
         byte[] cmd = preUpgradeCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[预升级] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
-
-    @OnClick(R.id.probe_upgrade)
-    public void probe_upgrade(){
-        Log.e("hugh" , "点击下发 ProbeUpgradeEvent 指令 " );
-        EventBus.getDefault().post(new ProbeUpgradeEvent());
-    }
-
-    @OnClick(R.id.probe_reset)
-    public void probe_reset(){
-        ProbeResetCmd resetCmd = new ProbeResetCmd();
-        byte[] cmd = resetCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发resetCmd指令[复位指令] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void cmdEvent(ProbeUpgradeEvent probeUpgradeEvent){
