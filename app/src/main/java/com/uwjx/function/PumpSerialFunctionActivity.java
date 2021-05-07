@@ -2,6 +2,9 @@ package com.uwjx.function;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
+import android.content.res.AssetManager;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -13,12 +16,15 @@ import com.uwjx.function.event.ProbeCmdEvent;
 import com.uwjx.function.probe.ProbeCmdQueue;
 import com.uwjx.function.probe.ProbeOpen24VCmd;
 import com.uwjx.function.probe.ProbeOpenRelayCmd;
+import com.uwjx.function.probe.ProbePreUpgradeCmd;
 import com.uwjx.function.probe.ProbeQueryLiquidLevelCmd;
 import com.uwjx.function.probe.ProbeQuerySnCmd;
 import com.uwjx.function.probe.ProbeQuerySoftwareVersionCmd;
 import com.uwjx.function.probe.ProbeResetCmd;
+import com.uwjx.function.probe.ProbeUpgradeCmd;
 import com.uwjx.function.util.ByteUtils;
 import com.uwjx.function.util.DateUtil;
+import com.uwjx.function.util.FileReadUtils;
 import com.uwjx.serial.Device;
 import com.uwjx.serial.SerialPortManager;
 import com.uwjx.serial.listener.OnOpenSerialPortListener;
@@ -29,39 +35,51 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SerialFunctionActivity extends Activity implements OnOpenSerialPortListener {
+public class PumpSerialFunctionActivity extends Activity implements OnOpenSerialPortListener {
 
     public static final String DEVICE = "device-data";
 
     SerialPortManager mSerialPortManager;
     ProbeCmdQueue probeCmdQueue = ProbeCmdQueue.getInstance();
 
-    @BindView(R.id.probe_device_info)
-    TextView probe_device_info;
-    @BindView(R.id.probe_send_cmd)
-    TextView probe_send_cmd;
-    @BindView(R.id.probe_receive_cmd)
-    TextView probe_receive_cmd;
+    @BindView(R.id.pump_device_info)
+    TextView pump_device_info;
+    @BindView(R.id.pump_send_cmd)
+    TextView pump_send_cmd;
+    @BindView(R.id.pump_receive_cmd)
+    TextView pump_receive_cmd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_serial_probe_function);
+        setContentView(R.layout.activity_serial_pump_function);
         ButterKnife.bind(this);
 
         Device device = (Device) getIntent().getSerializableExtra(DEVICE);
         Log.i("hugh", "onCreate: device = " + device);
         if (null == device) {
-            probe_device_info.setText("设备信息为空");
+            pump_device_info.setText("设备信息为空");
             return;
         }else {
-            probe_device_info.setText(device.getName() + " ");
+            pump_device_info.setText(device.getName() + " ");
         }
+
+//        //监听otg插入 拔出
+//        IntentFilter usbDeviceStateFilter = new IntentFilter();
+//        usbDeviceStateFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+//        usbDeviceStateFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+//        registerReceiver(UDiskMountedReceiver, usbDeviceStateFilter);
+//        //注册监听自定义广播
+//        IntentFilter filter = new IntentFilter(Constant.ACTION_USB_PERMISSION);
+//        registerReceiver(UDiskMountedReceiver, filter);
 
 
         mSerialPortManager = new SerialPortManager();
@@ -81,16 +99,16 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
         String msg = DateUtil.getFormat() + " \t " + probeCmdEvent.getCmd() + "\n";
 
         String originMSg = "";
-        if(probe_receive_cmd.getText() != null ){
-            originMSg= probe_receive_cmd.getText().toString();
+        if(pump_receive_cmd.getText() != null ){
+            originMSg= pump_receive_cmd.getText().toString();
         }
 
-        probe_receive_cmd.setText(msg + originMSg);
+        pump_receive_cmd.setText(msg + originMSg);
 
         //            runOnUiThread(new Runnable() {
 //                @Override
 //                public void run() {
-//                    probe_send_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
+//                    pump_send_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
 //                }
 //            });
     }
@@ -100,6 +118,7 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
         super.onStart();
         EventBus.getDefault().register(this);
         probeCmdQueue.startProcess();
+
     }
 
     @Override
@@ -125,7 +144,7 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
 //            runOnUiThread(new Runnable() {
 //                @Override
 //                public void run() {
-//                    probe_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
+//                    pump_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
 //                }
 //            });
         }
@@ -142,23 +161,23 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
                 public void run() {
                     String sentMsg = DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n";
                     String originSentMSg = "";
-                    if(probe_receive_cmd.getText() != null ){
-                        originSentMSg= probe_send_cmd.getText().toString();
+                    if(pump_receive_cmd.getText() != null ){
+                        originSentMSg= pump_send_cmd.getText().toString();
                     }
 
-                    probe_send_cmd.setText(sentMsg + originSentMSg);
-//                    probe_send_cmd.append();
+                    pump_send_cmd.setText(sentMsg + originSentMSg);
+//                    pump_send_cmd.append();
 
 
 
                     String msg = "-----------------------------------------------------------------\n";
 
                     String originMSg = "";
-                    if(probe_receive_cmd.getText() != null ){
-                        originMSg= probe_receive_cmd.getText().toString();
+                    if(pump_receive_cmd.getText() != null ){
+                        originMSg= pump_receive_cmd.getText().toString();
                     }
 
-                    probe_receive_cmd.setText(msg + originMSg);
+                    pump_receive_cmd.setText(msg + originMSg);
                 }
             });
         }
@@ -182,8 +201,8 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
     public void onSuccess(File device) {
         Log.w("hugh" , "串口打开成功@@@@@@@@@@@@@@@@@@@");
         Toast.makeText(getApplicationContext(), String.format("串口 [%s] 打开成功", device.getPath()), Toast.LENGTH_SHORT).show();
-        probe_device_info.setText(device.getName() + "\t串口打开成功");
-        probe_device_info.setTextColor(getResources().getColor(R.color.colorGreen));
+        pump_device_info.setText(device.getName() + "\t串口打开成功");
+        pump_device_info.setTextColor(getResources().getColor(R.color.colorGreen));
     }
 
     /**
@@ -193,10 +212,10 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
      * @param status status
      */
     @Override
-    public void onFail(File device, OnOpenSerialPortListener.Status status) {
+    public void onFail(File device, Status status) {
         Log.w("hugh" , "串口打开失败 ###################");
-        probe_device_info.setText(device.getName() + "\t串口打开失败");
-        probe_device_info.setTextColor(getResources().getColor(R.color.colorFontRed));
+        pump_device_info.setText(device.getName() + "\t串口打开失败");
+        pump_device_info.setTextColor(getResources().getColor(R.color.colorFontRed));
         switch (status) {
             case NO_READ_WRITE_PERMISSION:
                 showDialog(device.getPath(), "没有读写权限");
@@ -223,96 +242,132 @@ public class SerialFunctionActivity extends Activity implements OnOpenSerialPort
                 .show();
     }
 
-    @OnClick(R.id.probe_query_liquid_level_1)
-    public void probe_query_liquid_level_1(){
+    @OnClick(R.id.pump_query_liquid_level_1)
+    public void pump_query_liquid_level_1(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 1] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_liquid_level_2)
-    public void probe_query_liquid_level_2(){
+    @OnClick(R.id.pump_query_liquid_level_2)
+    public void pump_query_liquid_level_2(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(2);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 2] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_liquid_level_3)
-    public void probe_query_liquid_level_3(){
+    @OnClick(R.id.pump_query_liquid_level_3)
+    public void pump_query_liquid_level_3(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(3);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 3] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_liquid_level_4)
-    public void probe_query_liquid_level_4(){
+    @OnClick(R.id.pump_query_liquid_level_4)
+    public void pump_query_liquid_level_4(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(4);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 4] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_liquid_level_all)
-    public void probe_query_liquid_level(){
+    @OnClick(R.id.pump_query_liquid_level_all)
+    public void pump_query_liquid_level(){
         ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(0);
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 all] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_software_version)
-    public void probe_query_software_version(){
+    @OnClick(R.id.pump_query_software_version)
+    public void pump_query_software_version(){
         ProbeQuerySoftwareVersionCmd querySoftwareVersionCmd = new ProbeQuerySoftwareVersionCmd();
         byte[] cmd = querySoftwareVersionCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发querySoftwareVersionCmd指令[查询软件版本号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_query_sn)
-    public void probe_query_sn(){
+    @OnClick(R.id.pump_query_sn)
+    public void pump_query_sn(){
         ProbeQuerySnCmd querySnCmd = new ProbeQuerySnCmd();
         byte[] cmd = querySnCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发querySnCmd指令[查询序列号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_open_24v)
-    public void probe_open_24v(){
+    @OnClick(R.id.pump_open_24v)
+    public void pump_open_24v(){
         ProbeOpen24VCmd open24VCmd = new ProbeOpen24VCmd(1);
         byte[] cmd = open24VCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发open24VCmd指令[开启 24V] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_open_relay)
-    public void probe_open_relay(){
+    @OnClick(R.id.pump_open_relay)
+    public void pump_open_relay(){
         ProbeOpenRelayCmd openRelayCmd = new ProbeOpenRelayCmd(1);
         byte[] cmd = openRelayCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发openRelayCmd指令[开启继电器] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_pre_upgrade)
-    public void probe_pre_upgrade(){
-//        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-//        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-//        mSerialPortManager.sendBytes(cmd);
-//        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+    @OnClick(R.id.pump_pre_upgrade)
+    public void pump_pre_upgrade(){
+
+        byte [] lengthByte = new byte[2];
+        lengthByte[0] = 0x21;
+        lengthByte[1] = 0x21;
+
+        ProbePreUpgradeCmd preUpgradeCmd = new ProbePreUpgradeCmd(lengthByte);
+        byte[] cmd = preUpgradeCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发30指令[预升级] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_upgrade)
-    public void probe_upgrade(){
-//        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-//        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+    @OnClick(R.id.pump_upgrade)
+    public void pump_upgrade(){
+        Log.w("wanghuan" , "Pump 预升级 处理");
+        byte [] lengthByte = new byte[2];
+        lengthByte[0] = 0x21;
+        lengthByte[1] = 0x21;
+
+        byte [] offsetByte = new byte[2];
+        offsetByte[0] = 0x21;
+        offsetByte[1] = 0x21;
+
+        AssetManager assetManager = getAssets();
+        try {
+            InputStream inputStream = assetManager.open("PUMP.bin");
+            FileInputStream input = (FileInputStream)inputStream;
+            Log.w("hugh" , "Bin 文件长度:" + input.available());
+            // 关闭输入流
+            if(input != null){
+                input.close();
+            }
+            if(inputStream != null){
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        byte[] data = FileReadUtils.getByteStream("");
+
+        byte [] dataByte = new byte[2];
+        offsetByte[0] = 0x21;
+        offsetByte[1] = 0x21;
+
+//        ProbeUpgradeCmd upgradeCmd = new ProbeUpgradeCmd(lengthByte , offsetByte,dataByte );
+//        byte[] cmd = upgradeCmd.getSendCmd();
 //        mSerialPortManager.sendBytes(cmd);
-//        Log.i("hugh", "下发30指令[查询液位] 到设备 = " + ByteUtils.genHexStr(cmd));
+//        Log.i("hugh", "下发30指令[升级] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.probe_reset)
-    public void probe_reset(){
+    @OnClick(R.id.pump_reset)
+    public void pump_reset(){
         ProbeResetCmd resetCmd = new ProbeResetCmd();
         byte[] cmd = resetCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);

@@ -44,7 +44,10 @@ public enum Code {
     QUERY_TANK4_LEVEL("34", (byte) 0x34),//0x30   查询tank的页面高度
     QUERY_TANK5_LEVEL("35", (byte) 0x35),//0x30   查询tank的页面高度
     QUERY_TANK6_LEVEL("36", (byte) 0x36),//0x30   查询tank的页面高度
-    MODIFY_HL("68", (byte) 0x68);//0x59  修改高低档    IDLE
+    MODIFY_HL("68", (byte) 0x68),//0x59  修改高低档    IDLE
+
+    PRE_UPGRADE("69", (byte) 0x69),//0x59  修改高低档    IDLE
+    UPGRADE("6A", (byte) 0x6A);//0x59  修改高低档    IDLE
 
     private String value;
     private byte byteCode;

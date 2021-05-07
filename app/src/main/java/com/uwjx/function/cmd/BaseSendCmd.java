@@ -34,6 +34,32 @@ public abstract class BaseSendCmd {
         return Conversion.hexStringToByteArray(cmd);
     }*/
 
+    public byte [] dataLengthUsed;//数据长度
+
+    protected byte[] getPreUpgradeCmd() {
+        List<Byte> list = new ArrayList<>();
+        List<Byte> crc_field = new ArrayList<>();
+        list.add(head[0]);
+        list.add(head[1]);
+        list.add(dir);
+        list.add(addr);
+        list.add(code);
+        crc_field.add(dir);
+        crc_field.add(addr);
+        crc_field.add(code);
+
+        crc = CRCUtils.getCrcByte(getBytes(crc_field));
+        list.add(crc[1]);
+        list.add(crc[0]);
+        list.add(end[0]);
+        list.add(end[1]);
+        String s = "";
+        for (byte b: list) {
+            s = s + b + "";
+        }
+        return getBytes(list);
+    }
+
     protected byte[] getThisCmd() {
         List<Byte> list = new ArrayList<>();
         List<Byte> crc_field = new ArrayList<>();
