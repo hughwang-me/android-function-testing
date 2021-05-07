@@ -357,6 +357,7 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
                 Log.i("hugh", "第 "+index+" 次下发  [升级数据] 到设备 = " + ByteUtils.genHexStr(cmd));
 
                 String currentHex = ByteUtils.bytesToHexStr(buffer);
+                Log.w("hugh" , "下发第"+index+"个的升级数据 " + currentHex);
                 index++;
 
                 try {
@@ -375,9 +376,10 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
             ProbeUpgradeCmd upgradeCmd = new ProbeUpgradeCmd(lengthByte , offsetByte,buffer );
             byte[] cmd = upgradeCmd.getSendCmd();
             mSerialPortManager.sendBytes(cmd);
-            Log.i("hugh", "下发30指令[升级] 到设备 = " + ByteUtils.genHexStr(cmd));
+            Log.i("hugh", "下发30指令[升级数据] 到设备 = " + ByteUtils.genHexStr(cmd));
 
             String currentHex = ByteUtils.bytesToHexStr(buffer);
+            Log.w("hugh" , "下发第"+index+"个的升级数据 " + currentHex);
 
 
             if(inputStream != null){
