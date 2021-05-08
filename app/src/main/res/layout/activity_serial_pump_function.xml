@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 查询软件版本号"
+            android:text="Pump 查询软件版本号"
             android:id="@+id/pump_query_software_version"/>
         <Button
             android:layout_width="0dp"
@@ -101,13 +101,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 程序预更新指令"
+            android:text="PUMP 程序预更新指令"
             android:id="@+id/pump_pre_upgrade"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 程序更新"
+            android:text="PUMP 程序更新"
             android:id="@+id/pump_upgrade"/>
         <Button
             android:layout_width="0dp"

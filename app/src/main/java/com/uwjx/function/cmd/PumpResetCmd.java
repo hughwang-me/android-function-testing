@@ -3,11 +3,11 @@ package com.uwjx.function.cmd;
 /**
    * 关闭此次交易 (EOT(FEOT,PEOT))
    */
-public class CloseDealCmd extends BasePumpCmd {
+public class PumpResetCmd extends BasePumpCmd {
 
-    public CloseDealCmd(Hoses hoses) {
+    public PumpResetCmd(Hoses hoses) {
         addr = hoses.getCode();
-        code = Code.CLOSE_THE_DEAL.getByteCode();
+        code = Code.RESET.getByteCode();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.uwjx.function.cmd;
 /**
    * 加油机授权 (IDLE,CALL,STOP)
    */
-public class AuthCmd extends BaseSendCmd {
+public class AuthCmd extends BasePumpCmd {
 
     public AuthCmd(Hoses hoses) {
         addr = hoses.getCode();

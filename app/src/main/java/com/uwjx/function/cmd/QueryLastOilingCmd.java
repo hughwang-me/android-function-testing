@@ -3,7 +3,7 @@ package com.uwjx.function.cmd;
 /**
    * 查询上次加油升数 (IDLE,EOT)
    */
-public class QueryLastOilingCmd extends BaseSendCmd {
+public class QueryLastOilingCmd extends BasePumpCmd {
 
     public QueryLastOilingCmd(Hoses hoses) {
         addr = hoses.getCode();

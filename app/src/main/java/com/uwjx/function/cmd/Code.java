@@ -47,7 +47,9 @@ public enum Code {
     MODIFY_HL("68", (byte) 0x68),//0x59  修改高低档    IDLE
 
     PRE_UPGRADE("69", (byte) 0x69),//0x59  修改高低档    IDLE
-    UPGRADE("6A", (byte) 0x6A);//0x59  修改高低档    IDLE
+    UPGRADE("6A", (byte) 0x6A),//0x59  修改高低档    IDLE
+
+    RESET("6B", (byte) 0x6B);//0x6B  复位    IDLE
 
     private String value;
     private byte byteCode;

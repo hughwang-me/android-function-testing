@@ -3,7 +3,7 @@ package com.uwjx.function.cmd;
 /**
    * 查询实时加油数据 (IDLE,EOT)
    */
-public class QueryRealTimeOilingCmd extends BaseSendCmd {
+public class QueryRealTimeOilingCmd extends BasePumpCmd {
 
     public QueryRealTimeOilingCmd(Hoses hoses) {
         addr = hoses.getCode();

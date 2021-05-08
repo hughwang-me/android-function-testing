@@ -6,13 +6,23 @@ import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.uwjx.function.cmd.Hoses;
+import com.uwjx.function.cmd.PumpPreUpgradeCmd;
+import com.uwjx.function.cmd.PumpQuerySoftwareVersionCmd;
+import com.uwjx.function.cmd.PumpResetCmd;
+import com.uwjx.function.cmd.PumpUpgradeCmd;
 import com.uwjx.function.event.ProbeCmdEvent;
+import com.uwjx.function.event.ProbePreUpgradeEvent;
+import com.uwjx.function.event.ProbeUpgradeEvent;
+import com.uwjx.function.event.PumpPreUpgradeEvent;
+import com.uwjx.function.event.PumpUpgradeEvent;
 import com.uwjx.function.probe.ProbeCmdQueue;
 import com.uwjx.function.probe.ProbeOpen24VCmd;
 import com.uwjx.function.probe.ProbeOpenRelayCmd;
@@ -57,6 +67,8 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     @BindView(R.id.pump_receive_cmd)
     TextView pump_receive_cmd;
 
+    private int hoseIndex = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +82,15 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
             return;
         }else {
             pump_device_info.setText(device.getName() + " ");
+        }
+
+        if(!TextUtils.isEmpty(device.getName())){
+            if(device.getName().contains("2")){
+                hoseIndex = 1;
+                Log.w("hugh" , "1号HOSE");
+            }else {
+                hoseIndex = 2;
+            }
         }
 
 //        //监听otg插入 拔出
@@ -284,10 +305,10 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
 
     @OnClick(R.id.pump_query_software_version)
     public void pump_query_software_version(){
-        ProbeQuerySoftwareVersionCmd querySoftwareVersionCmd = new ProbeQuerySoftwareVersionCmd();
+        PumpQuerySoftwareVersionCmd querySoftwareVersionCmd = new PumpQuerySoftwareVersionCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
         byte[] cmd = querySoftwareVersionCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发querySoftwareVersionCmd指令[查询软件版本号] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发 PumpQuerySoftwareVersionCmd 指令[查询软件版本号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
     @OnClick(R.id.pump_query_sn)
@@ -315,38 +336,42 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     }
 
     @OnClick(R.id.pump_pre_upgrade)
-    public void pump_pre_upgrade(){
-
-        byte [] lengthByte = new byte[2];
-        lengthByte[0] = 0x21;
-        lengthByte[1] = 0x21;
-
-        ProbePreUpgradeCmd preUpgradeCmd = new ProbePreUpgradeCmd(lengthByte);
-        byte[] cmd = preUpgradeCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[预升级] 到设备 = " + ByteUtils.genHexStr(cmd));
+    public void probe_pre_upgrade(){
+        Log.e("hugh" , "点击下发 PumpPreUpgradeEvent 指令 " );
+        EventBus.getDefault().post(new PumpPreUpgradeEvent());
     }
 
     @OnClick(R.id.pump_upgrade)
-    public void pump_upgrade(){
-        Log.w("wanghuan" , "Pump 预升级 处理");
+    public void probe_upgrade(){
+        Log.e("hugh" , "点击下发 PumpUpgradeEvent 指令 " );
+        EventBus.getDefault().post(new PumpUpgradeEvent());
+    }
+
+
+    @OnClick(R.id.pump_reset)
+    public void pump_reset(){
+        PumpResetCmd resetCmd = new PumpResetCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
+        byte[] cmd = resetCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发 6B 指令[复位指令] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void preUpgradeEvent(PumpPreUpgradeEvent preUpgradeEvent) {
+        Log.e("hugh", "eventbus 接收到 PumpPreUpgradeEvent 指令 ");
+
+        String file = "/storage/udisk/PUMP.bin";
+
         byte [] lengthByte = new byte[2];
-        lengthByte[0] = 0x21;
-        lengthByte[1] = 0x21;
-
-        byte [] offsetByte = new byte[2];
-        offsetByte[0] = 0x21;
-        offsetByte[1] = 0x21;
-
-        AssetManager assetManager = getAssets();
         try {
-            InputStream inputStream = assetManager.open("PUMP.bin");
-            FileInputStream input = (FileInputStream)inputStream;
-            Log.w("hugh" , "Bin 文件长度:" + input.available());
+            FileInputStream inputStream = new FileInputStream(file);
+            Log.w("hugh" , "Bin 文件长度:" + inputStream.available());
+            int size = inputStream.available();
+            byte[] byteSize = ByteUtils.shortToByteArr((short) size);
+            lengthByte[0] = byteSize[0];
+            lengthByte[1] = byteSize[1];
             // 关闭输入流
-            if(input != null){
-                input.close();
-            }
             if(inputStream != null){
                 inputStream.close();
             }
@@ -354,24 +379,77 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
             e.printStackTrace();
         }
 
-//        byte[] data = FileReadUtils.getByteStream("");
-
-        byte [] dataByte = new byte[2];
-        offsetByte[0] = 0x21;
-        offsetByte[1] = 0x21;
-
-//        ProbeUpgradeCmd upgradeCmd = new ProbeUpgradeCmd(lengthByte , offsetByte,dataByte );
-//        byte[] cmd = upgradeCmd.getSendCmd();
-//        mSerialPortManager.sendBytes(cmd);
-//        Log.i("hugh", "下发30指令[升级] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
-    @OnClick(R.id.pump_reset)
-    public void pump_reset(){
-        ProbeResetCmd resetCmd = new ProbeResetCmd();
-        byte[] cmd = resetCmd.getSendCmd();
+        PumpPreUpgradeCmd preUpgradeCmd = new PumpPreUpgradeCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
+        preUpgradeCmd.setDataLength(lengthByte);
+        byte[] cmd = preUpgradeCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发resetCmd指令[复位指令] 到设备 = " + ByteUtils.genHexStr(cmd));
+        Log.i("hugh", "下发69指令[预升级] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void pumpUpgradeEvent(PumpUpgradeEvent pumpUpgradeEvent){
+        Log.e("hugh" , "eventbus 接收到 PumpUpgradeEvent 指令 " );
+
+        String file = "/storage/udisk/PUMP.bin";
+
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            int total = inputStream.available();
+            Log.w("hugh" , "Bin 文件总长度:" + total);
+
+            short index = 0;
+            while (inputStream.available() >= 1024){
+                byte[] buffer = new byte[1024];
+                inputStream.read(buffer);
+
+                byte[] offsetByte = ByteUtils.shortToByteArr((short) (index * 1024));
+                byte [] lengthByte = ByteUtils.shortToByteArr((short)1024);
+                PumpUpgradeCmd upgradeCmd = new PumpUpgradeCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
+                upgradeCmd.setDateLength(lengthByte);
+                upgradeCmd.setAddressOffset(offsetByte);
+                upgradeCmd.setData(buffer);
+
+                byte[] cmd = upgradeCmd.getSendCmd();
+                mSerialPortManager.sendBytes(cmd);
+                Log.i("hugh", "第 "+index+" 次下发  [升级数据] 到设备 = " + ByteUtils.genHexStr(cmd));
+
+                String currentHex = ByteUtils.bytesToHexStr(buffer);
+                Log.w("hugh" , "下发第"+index+"个的升级数据 " + currentHex);
+                index++;
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            int lastSize = inputStream.available();
+            byte[] buffer = new byte[lastSize];
+            inputStream.read(buffer);
+
+            byte[] offsetByte = ByteUtils.shortToByteArr((short) (index * 1024));
+            byte [] lengthByte = ByteUtils.shortToByteArr((short)lastSize);
+
+            PumpUpgradeCmd upgradeCmd = new PumpUpgradeCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
+            upgradeCmd.setDateLength(lengthByte);
+            upgradeCmd.setAddressOffset(offsetByte);
+            upgradeCmd.setData(buffer);
+
+            byte[] cmd = upgradeCmd.getSendCmd();
+            mSerialPortManager.sendBytes(cmd);
+            Log.i("hugh", "下发30指令[升级数据] 到设备 = " + ByteUtils.genHexStr(cmd));
+
+            String currentHex = ByteUtils.bytesToHexStr(buffer);
+            Log.w("hugh" , "下发第"+index+"个的升级数据 " + currentHex);
+
+
+            if(inputStream != null){
+                inputStream.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

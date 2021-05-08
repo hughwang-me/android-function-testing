@@ -7,7 +7,7 @@ import com.uwjx.function.util.CRCUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseSendCmd {
+public abstract class BasePumpCmd {
 
     public byte [] head = {(byte)0x20,(byte)0x21};//帧头
     public byte dir = (byte)0x30;//方向
@@ -35,6 +35,7 @@ public abstract class BaseSendCmd {
     }*/
 
     public byte [] dataLengthUsed;//数据长度
+    public byte[] addressOffsetUsed;
 
     protected byte[] getPreUpgradeCmd() {
         List<Byte> list = new ArrayList<>();
@@ -44,13 +45,18 @@ public abstract class BaseSendCmd {
         list.add(dir);
         list.add(addr);
         list.add(code);
+
         crc_field.add(dir);
         crc_field.add(addr);
         crc_field.add(code);
 
+        for (byte b : dataLengthUsed) {
+            list.add(b);
+            crc_field.add(b);
+        }
         crc = CRCUtils.getCrcByte(getBytes(crc_field));
-        list.add(crc[1]);
         list.add(crc[0]);
+        list.add(crc[1]);
         list.add(end[0]);
         list.add(end[1]);
         String s = "";
@@ -59,6 +65,73 @@ public abstract class BaseSendCmd {
         }
         return getBytes(list);
     }
+
+
+    protected byte[] getUpgradeCmd() {
+        List<Byte> list = new ArrayList<>();
+        List<Byte> crc_field = new ArrayList<>();
+        list.add(head[0]);
+        list.add(head[1]);
+        list.add(dir);
+        list.add(addr);
+        list.add(code);
+
+        crc_field.add(dir);
+        crc_field.add(addr);
+        crc_field.add(code);
+
+        for (byte b : dataLengthUsed) {
+            list.add(b);
+            crc_field.add(b);
+        }
+
+        for (byte b : addressOffsetUsed) {
+            list.add(b);
+            crc_field.add(b);
+        }
+
+        for (byte b : data) {
+            list.add(b);
+            crc_field.add(b);
+        }
+
+
+        crc = CRCUtils.getCrcByte(getBytes(crc_field));
+        list.add(crc[0]);
+        list.add(crc[1]);
+        list.add(end[0]);
+        list.add(end[1]);
+        String s = "";
+        for (byte b: list) {
+            s = s + b + "";
+        }
+        return getBytes(list);
+    }
+
+//    protected byte[] getPreUpgradeCmd() {
+//        List<Byte> list = new ArrayList<>();
+//        List<Byte> crc_field = new ArrayList<>();
+//        list.add(head[0]);
+//        list.add(head[1]);
+//        list.add(dir);
+//        list.add(addr);
+//        list.add(code);
+//
+//        crc_field.add(dir);
+//        crc_field.add(addr);
+//        crc_field.add(code);
+//
+//        crc = CRCUtils.getCrcByte(getBytes(crc_field));
+//        list.add(crc[0]);
+//        list.add(crc[1]);
+//        list.add(end[0]);
+//        list.add(end[1]);
+//        String s = "";
+//        for (byte b : list) {
+//            s = s + b + "";
+//        }
+//        return getBytes(list);
+//    }
 
     protected byte[] getThisCmd() {
         List<Byte> list = new ArrayList<>();
@@ -76,8 +149,8 @@ public abstract class BaseSendCmd {
         crc_field.add(code);
 
         crc = CRCUtils.getCrcByte(getBytes(crc_field));
-        list.add(crc[1]);
         list.add(crc[0]);
+        list.add(crc[1]);
         list.add(end[0]);
         list.add(end[1]);
         String s = "";

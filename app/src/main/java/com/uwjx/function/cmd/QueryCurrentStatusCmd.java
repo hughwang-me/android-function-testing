@@ -4,7 +4,7 @@ package com.uwjx.function.cmd;
 /**
    * 查询加油机当前状态 (Any state)
    */
-public class QueryCurrentStatusCmd extends BaseSendCmd {
+public class QueryCurrentStatusCmd extends BasePumpCmd {
 
     public QueryCurrentStatusCmd(Hoses hoses) {
         addr = hoses.getCode();
