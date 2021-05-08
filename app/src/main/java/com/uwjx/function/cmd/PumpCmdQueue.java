@@ -11,18 +11,18 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
-public class CmdQueue {
+public class PumpCmdQueue {
 
-    private static CmdQueue cmdQueue;
+    private static PumpCmdQueue pumpCmdQueue;
 
-    private CmdQueue() {
+    private PumpCmdQueue() {
     }
 
-    public static CmdQueue getInstance(){
-        if(cmdQueue == null){
-            cmdQueue = new CmdQueue();
+    public static PumpCmdQueue getInstance(){
+        if(pumpCmdQueue == null){
+            pumpCmdQueue = new PumpCmdQueue();
         }
-        return cmdQueue;
+        return pumpCmdQueue;
     }
 
     private boolean isProcess = true;

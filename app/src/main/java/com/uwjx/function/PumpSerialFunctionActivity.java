@@ -2,9 +2,6 @@ package com.uwjx.function;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
-import android.content.res.AssetManager;
-import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,28 +10,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.uwjx.function.cmd.PumpCmdQueue;
 import com.uwjx.function.cmd.Hoses;
 import com.uwjx.function.cmd.PumpPreUpgradeCmd;
 import com.uwjx.function.cmd.PumpQuerySoftwareVersionCmd;
 import com.uwjx.function.cmd.PumpResetCmd;
 import com.uwjx.function.cmd.PumpUpgradeCmd;
 import com.uwjx.function.event.ProbeCmdEvent;
-import com.uwjx.function.event.ProbePreUpgradeEvent;
-import com.uwjx.function.event.ProbeUpgradeEvent;
 import com.uwjx.function.event.PumpPreUpgradeEvent;
 import com.uwjx.function.event.PumpUpgradeEvent;
-import com.uwjx.function.probe.ProbeCmdQueue;
 import com.uwjx.function.probe.ProbeOpen24VCmd;
 import com.uwjx.function.probe.ProbeOpenRelayCmd;
-import com.uwjx.function.probe.ProbePreUpgradeCmd;
 import com.uwjx.function.probe.ProbeQueryLiquidLevelCmd;
 import com.uwjx.function.probe.ProbeQuerySnCmd;
-import com.uwjx.function.probe.ProbeQuerySoftwareVersionCmd;
-import com.uwjx.function.probe.ProbeResetCmd;
-import com.uwjx.function.probe.ProbeUpgradeCmd;
 import com.uwjx.function.util.ByteUtils;
 import com.uwjx.function.util.DateUtil;
-import com.uwjx.function.util.FileReadUtils;
 import com.uwjx.serial.Device;
 import com.uwjx.serial.SerialPortManager;
 import com.uwjx.serial.listener.OnOpenSerialPortListener;
@@ -47,7 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +47,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     public static final String DEVICE = "device-data";
 
     SerialPortManager mSerialPortManager;
-    ProbeCmdQueue probeCmdQueue = ProbeCmdQueue.getInstance();
+    PumpCmdQueue pumpCmdQueue = PumpCmdQueue.getInstance();
 
     @BindView(R.id.pump_device_info)
     TextView pump_device_info;
@@ -138,7 +127,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        probeCmdQueue.startProcess();
+        pumpCmdQueue.startProcess();
 
     }
 
@@ -146,7 +135,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        probeCmdQueue.stopProcess();
+        pumpCmdQueue.stopProcess();
     }
 
     OnSerialPortDataListener serialPortDataListener = new OnSerialPortDataListener() {
@@ -156,7 +145,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
 //            Log.i(TAG, "onDataReceived [ String ]: " + new String(bytes));
             Log.e("hugh", "接收到来自设备的16进制数据 = " + ByteUtils.genHexStr(bytes));
 
-            probeCmdQueue.add(ByteUtils.genHexStr(bytes));
+            pumpCmdQueue.add(ByteUtils.genHexStr(bytes));
 
 
 
