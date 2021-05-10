@@ -1,4 +1,4 @@
-package com.uwjx.function;
+package com.uwjx.function.activity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.uwjx.function.R;
 import com.uwjx.function.event.ProbeCmdEvent;
 import com.uwjx.function.event.ProbePreUpgradeEvent;
 import com.uwjx.function.event.ProbeUpgradeEvent;

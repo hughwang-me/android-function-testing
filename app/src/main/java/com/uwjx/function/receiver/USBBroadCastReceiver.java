@@ -1,4 +1,4 @@
-package com.uwjx.function;
+package com.uwjx.function.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

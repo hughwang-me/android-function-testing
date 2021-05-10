@@ -12,7 +12,7 @@ import com.github.mjdev.libaums.fs.UsbFile;
 import com.github.mjdev.libaums.fs.UsbFileInputStream;
 import com.github.mjdev.libaums.fs.UsbFileOutputStream;
 import com.github.mjdev.libaums.partition.Partition;
-import com.uwjx.function.USBBroadCastReceiver;
+import com.uwjx.function.receiver.USBBroadCastReceiver;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.uwjx.function.USBBroadCastReceiver.ACTION_USB_PERMISSION;
+import static com.uwjx.function.receiver.USBBroadCastReceiver.ACTION_USB_PERMISSION;
 
 public class UsbHelper {
 

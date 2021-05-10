@@ -1,4 +1,4 @@
-package com.uwjx.function;
+package com.uwjx.function.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.uwjx.function.R;
 import com.uwjx.serial.Device;
 import com.uwjx.serial.Driver;
 import com.uwjx.serial.SerialPortFinder;
