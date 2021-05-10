@@ -16,6 +16,7 @@ import com.uwjx.function.cmd.PumpPreUpgradeCmd;
 import com.uwjx.function.cmd.PumpQuerySoftwareVersionCmd;
 import com.uwjx.function.cmd.PumpResetCmd;
 import com.uwjx.function.cmd.PumpUpgradeCmd;
+import com.uwjx.function.event.CmdEvent;
 import com.uwjx.function.event.ProbeCmdEvent;
 import com.uwjx.function.event.PumpPreUpgradeEvent;
 import com.uwjx.function.event.PumpUpgradeEvent;
@@ -433,12 +434,17 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
             Log.w("hugh" , "下发第"+index+"个的升级数据 " + currentHex);
 
 
-            if(inputStream != null){
-                inputStream.close();
-            }
+            inputStream.close();
+            inputStream = null;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    public void CmdEvent(CmdEvent cmdEvent){
+        Log.w("hugh" , "接收到来自设完整数据:" + cmdEvent.getCmd());
+        pump_receive_cmd.append(DateUtil.getFormat() + " \t " + cmdEvent.getCmd()+ "\n");
     }
 }
