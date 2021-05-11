@@ -24,7 +24,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class ActiveMqService extends Service {
 
-    public final String TAG = ActiveMqService.class.getSimpleName();
+    public final String TAG = "hugh";
     private static MqttAndroidClient mqttAndroidClient;
     private MqttConnectOptions mMqttConnectOptions;
     public        String HOST           = "tcp://rx.uwjx.com:61616";//服务器地址（协议+地址+端口号）
@@ -33,8 +33,7 @@ public class ActiveMqService extends Service {
     public static String PUBLISH_TOPIC  = "tanli-sub-topic";//发布主题
     public static String RESPONSE_TOPIC = "tanli-resp-topic";//响应主题
 
-    public        String CLIENTID       = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-            ? Build.getSerial() : Build.SERIAL;//客户端ID，一般以客户端唯一标识符表示，这里用设备序列号表示
+    public        String CLIENTID       = "20210511";//客户端ID，一般以客户端唯一标识符表示，这里用设备序列号表示
 
 
     @Nullable
@@ -171,7 +170,7 @@ public class ActiveMqService extends Service {
         public void onFailure(IMqttToken arg0, Throwable arg1) {
             arg1.printStackTrace();
             Log.i(TAG, "连接失败 ");
-            doClientConnection();//连接失败，重连（可关闭服务器进行模拟）
+//            doClientConnection();//连接失败，重连（可关闭服务器进行模拟）
         }
     };
 
