@@ -5,10 +5,16 @@
     android:versionName="v1">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.hardware.usb.host" android:required="false" />
     <uses-feature android:name="android.hardware.usb.host" android:required="true" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".application.FunctionApplication"
@@ -18,7 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidfunctiontesting">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MessageQueueActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,6 +33,10 @@
         </activity>
         <activity android:name=".activity.ProbeSerialFunctionActivity"/>
         <activity android:name=".activity.PumpSerialFunctionActivity"/>
+
+
+        <service android:name="org.eclipse.paho.android.service.MqttService">
+        </service>
     </application>
 
 </manifest>
