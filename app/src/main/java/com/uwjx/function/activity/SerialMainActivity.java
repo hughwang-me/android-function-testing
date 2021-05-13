@@ -89,8 +89,8 @@ public class SerialMainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Device device = (Device)v.getTag();
             Log.w("hugh" , "点击的设备 : " + device.toString());
-            Intent intent = new Intent(getBaseContext(), PumpSerialFunctionActivity.class);
-            intent.putExtra(PumpSerialFunctionActivity.DEVICE, device);
+            Intent intent = new Intent(getBaseContext(), ProbeSerialFunctionActivity.class);
+            intent.putExtra(ProbeSerialFunctionActivity.DEVICE, device);
             startActivity(intent);
         }
     };
