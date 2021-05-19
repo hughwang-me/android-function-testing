@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 
 
@@ -35,6 +35,7 @@ public abstract class BasePumpCmd {
     }*/
 
     public byte [] dataLengthUsed;//数据长度
+    public byte [] upgradeFileCheck;//数据长度
     public byte[] addressOffsetUsed;
 
     protected byte[] getPreUpgradeCmd() {
@@ -51,6 +52,35 @@ public abstract class BasePumpCmd {
         crc_field.add(code);
 
         for (byte b : dataLengthUsed) {
+            list.add(b);
+            crc_field.add(b);
+        }
+        crc = CRCUtils.getCrcByte(getBytes(crc_field));
+        list.add(crc[0]);
+        list.add(crc[1]);
+        list.add(end[0]);
+        list.add(end[1]);
+        String s = "";
+        for (byte b: list) {
+            s = s + b + "";
+        }
+        return getBytes(list);
+    }
+
+    protected byte[] getUpgradeFileCheckCmd() {
+        List<Byte> list = new ArrayList<>();
+        List<Byte> crc_field = new ArrayList<>();
+        list.add(head[0]);
+        list.add(head[1]);
+        list.add(dir);
+        list.add(addr);
+        list.add(code);
+
+        crc_field.add(dir);
+        crc_field.add(addr);
+        crc_field.add(code);
+
+        for (byte b : upgradeFileCheck) {
             list.add(b);
             crc_field.add(b);
         }
@@ -108,30 +138,6 @@ public abstract class BasePumpCmd {
         return getBytes(list);
     }
 
-//    protected byte[] getPreUpgradeCmd() {
-//        List<Byte> list = new ArrayList<>();
-//        List<Byte> crc_field = new ArrayList<>();
-//        list.add(head[0]);
-//        list.add(head[1]);
-//        list.add(dir);
-//        list.add(addr);
-//        list.add(code);
-//
-//        crc_field.add(dir);
-//        crc_field.add(addr);
-//        crc_field.add(code);
-//
-//        crc = CRCUtils.getCrcByte(getBytes(crc_field));
-//        list.add(crc[0]);
-//        list.add(crc[1]);
-//        list.add(end[0]);
-//        list.add(end[1]);
-//        String s = "";
-//        for (byte b : list) {
-//            s = s + b + "";
-//        }
-//        return getBytes(list);
-//    }
 
     protected byte[] getThisCmd() {
         List<Byte> list = new ArrayList<>();

@@ -28,46 +28,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/pump_hose_1_status"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 查询液位(探针1号)"
-            android:id="@+id/pump_query_liquid_level_1"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 查询液位(探针2号)"
-            android:id="@+id/pump_query_liquid_level_2"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 查询液位(探针3号)"
-            android:id="@+id/pump_query_liquid_level_3"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 查询液位(探针4号)"
-            android:id="@+id/pump_query_liquid_level_4"/>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 查询液位(所有)"
-            android:id="@+id/pump_query_liquid_level_all"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -78,25 +43,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 查询序列号"
+            android:text="Pump 查询序列号"
             android:id="@+id/pump_query_sn"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 开启 24V"
-            android:id="@+id/pump_open_24v"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="probe 开启继电器"
-            android:id="@+id/pump_open_relay"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -113,7 +66,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="probe 复位指令"
+            android:text="PUMP 升级文件核验指令"
+            android:id="@+id/pump_upgrade_file_check"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="PUMP 复位指令"
             android:id="@+id/pump_reset"/>
     </LinearLayout>
     <LinearLayout

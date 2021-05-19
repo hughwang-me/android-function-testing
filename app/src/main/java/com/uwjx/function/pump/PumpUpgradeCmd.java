@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 public class PumpUpgradeCmd extends BasePumpCmd {
 

@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 /**
    * 加油机授权 (IDLE,CALL,STOP)

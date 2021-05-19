@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 /**
    * 立即停止当前加油过程，关闭电机电磁阀并中断加油 (BUSY,AUTH)

@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 /**
    * 查询上次加油升数 (IDLE,EOT)

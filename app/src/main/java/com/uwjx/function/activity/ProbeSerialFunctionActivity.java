@@ -24,7 +24,9 @@ import com.uwjx.function.probe.ProbeQuerySnCmd;
 import com.uwjx.function.probe.ProbeQuerySoftwareVersionCmd;
 import com.uwjx.function.probe.ProbeResetCmd;
 import com.uwjx.function.probe.ProbeUpgradeCmd;
+import com.uwjx.function.probe.ProbeUpgradeFileCheckVCmd;
 import com.uwjx.function.util.ByteUtils;
+import com.uwjx.function.util.CRCUtils;
 import com.uwjx.function.util.DateUtil;
 import com.uwjx.function.util.FileReadUtils;
 import com.uwjx.serial.Device;
@@ -40,6 +42,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -318,6 +322,76 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
         EventBus.getDefault().post(new ProbeUpgradeEvent());
     }
 
+    @OnClick(R.id.probe_upgrade_file_check)
+    public void probe_upgrade_file_check(){
+        Log.e("hugh" , "点击下发 probe_upgrade_file_check 指令 " );
+        ProbeUpgradeFileCheckVCmd upgradeFileCheckVCmd = new ProbeUpgradeFileCheckVCmd();
+        upgradeFileCheckVCmd.setCrcCheckData(binAllByteCrc);
+        byte[] cmd = upgradeFileCheckVCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发 probe_upgrade_file_check 指令[文件检查指令] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    private int binTotalSize = -1;
+    private int binEveryBlockSize = 1024;
+    private int binLastBlockSize = -1;
+    private List<byte[]> binBytes = new ArrayList<>();
+    private int binCurrentUpgradedIndex = -1;
+    byte[] binAllByte;
+    byte[] binAllByteCrc = new byte[2];
+
+    private void loadUpgradeBinInfo() {
+
+        //复位变量
+        binTotalSize = -1;
+        binLastBlockSize = -1;
+        binBytes = new ArrayList<>();
+        binCurrentUpgradedIndex = -1;
+
+        Log.e("hugh", "loadUpgradeBinInfo 处理 Bin 文件");
+        String file = "/storage/udisk/ATG.bin";
+        Log.w("hugh", "loadUpgradeBinInfo 使用的文件:" + file);
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            binTotalSize = inputStream.available();
+            binAllByte = new byte[binTotalSize];
+            Log.w("hugh", "loadUpgradeBinInfo Bin 文件总长度:" + binTotalSize);
+
+            short index = 0;
+            while (inputStream.available() >= 1024) {
+                byte[] buffer = new byte[1024];
+                inputStream.read(buffer);
+                binBytes.add(buffer);
+                String currentHex = ByteUtils.bytesToHexStr(buffer);
+                Log.w("hugh", "bin 的第" + index + "个的升级数据 " + currentHex);
+                index++;
+            }
+            binLastBlockSize = inputStream.available();
+            byte[] buffer = new byte[binLastBlockSize];
+            inputStream.read(buffer);
+            binBytes.add(buffer);
+            String currentHex = ByteUtils.bytesToHexStr(buffer);
+            Log.w("hugh", "下发第" + index + "个的升级数据 " + currentHex);
+            Log.w("hugh", "总共 " + binBytes.size() + " 个的升级数据 ");
+            inputStream.close();
+
+            Log.w("hugh", "最后一个bin 长度" + binLastBlockSize);
+            int binAllByteIndex = 0;
+            for (int i = 0; i < binBytes.size(); i++) {
+                byte[] item = binBytes.get(i);
+                for (byte b : item) {
+                    binAllByte[binAllByteIndex] = b;
+                    binAllByteIndex++;
+                }
+                Log.w("hugh", "item 长度" + item.length);
+            }
+            Log.w("hugh", "binAllByte 长度" + binAllByteIndex);
+            binAllByteCrc = CRCUtils.getCrcByte(binAllByte);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnClick(R.id.probe_reset)
     public void probe_reset(){
         ProbeResetCmd resetCmd = new ProbeResetCmd();
@@ -329,7 +403,7 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void preUpgradeEvent(ProbePreUpgradeEvent preUpgradeEvent) {
         Log.e("hugh", "eventbus 接收到 preUpgradeEvent 指令 ");
-
+        loadUpgradeBinInfo();
         String file = "/storage/udisk/ATG.bin";
 
         byte [] lengthByte = new byte[2];

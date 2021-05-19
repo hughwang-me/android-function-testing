@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,8 @@ public enum Code {
     PRE_UPGRADE("69", (byte) 0x69),//0x59  修改高低档    IDLE
     UPGRADE("6A", (byte) 0x6A),//0x59  修改高低档    IDLE
 
-    RESET("6B", (byte) 0x6B);//0x6B  复位    IDLE
+    RESET("6B", (byte) 0x6B),//0x6B  复位    IDLE
+    UPGRADE_FILE_CHECK("6C", (byte) 0x6C);//0x6C 升级文件核验    IDLE
 
     private String value;
     private byte byteCode;

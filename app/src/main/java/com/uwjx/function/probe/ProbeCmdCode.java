@@ -9,7 +9,8 @@ public enum  ProbeCmdCode {
     OPEN_RELAY("23", (byte) 0x23),//23   开启继电器
     PRE_UPGRADE("24", (byte) 0x24),//24   程序预更新指令
     UPGRADE("25", (byte) 0x25),//25   程序更新
-    RESET("26", (byte) 0x26);//26  复位指令
+    RESET("26", (byte) 0x26),//26  复位指令
+    UPGRADE_FILE_CHECK("27", (byte) 0x27);//27  升级文件核验
 
     private String value;
     private byte byteCode;

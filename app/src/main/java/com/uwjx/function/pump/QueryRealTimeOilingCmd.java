@@ -1,4 +1,4 @@
-package com.uwjx.function.cmd;
+package com.uwjx.function.pump;
 
 /**
    * 查询实时加油数据 (IDLE,EOT)

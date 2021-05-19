@@ -113,6 +113,12 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:text="probe 升级文件核对"
+            android:id="@+id/probe_upgrade_file_check"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="probe 复位指令"
             android:id="@+id/probe_reset"/>
     </LinearLayout>

@@ -11,21 +11,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.uwjx.function.R;
-import com.uwjx.function.cmd.PumpCmdQueue;
-import com.uwjx.function.cmd.Hoses;
-import com.uwjx.function.cmd.PumpPreUpgradeCmd;
-import com.uwjx.function.cmd.PumpQuerySoftwareVersionCmd;
-import com.uwjx.function.cmd.PumpResetCmd;
-import com.uwjx.function.cmd.PumpUpgradeCmd;
+import com.uwjx.function.pump.PumpCmdQueue;
+import com.uwjx.function.pump.Hoses;
+import com.uwjx.function.pump.PumpPreUpgradeCmd;
+import com.uwjx.function.pump.PumpQuerySoftwareVersionCmd;
+import com.uwjx.function.pump.PumpResetCmd;
+import com.uwjx.function.pump.PumpUpgradeCmd;
 import com.uwjx.function.event.CmdEvent;
 import com.uwjx.function.event.ProbeCmdEvent;
 import com.uwjx.function.event.PumpPreUpgradeEvent;
 import com.uwjx.function.event.PumpUpgradeEvent;
-import com.uwjx.function.probe.ProbeOpen24VCmd;
-import com.uwjx.function.probe.ProbeOpenRelayCmd;
-import com.uwjx.function.probe.ProbeQueryLiquidLevelCmd;
 import com.uwjx.function.probe.ProbeQuerySnCmd;
+import com.uwjx.function.pump.PumpUpgradeFileCheckCmd;
 import com.uwjx.function.util.ByteUtils;
+import com.uwjx.function.util.CRCUtils;
 import com.uwjx.function.util.DateUtil;
 import com.uwjx.serial.Device;
 import com.uwjx.serial.SerialPortManager;
@@ -39,6 +38,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,16 +85,6 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
             }
         }
 
-//        //监听otg插入 拔出
-//        IntentFilter usbDeviceStateFilter = new IntentFilter();
-//        usbDeviceStateFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-//        usbDeviceStateFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-//        registerReceiver(UDiskMountedReceiver, usbDeviceStateFilter);
-//        //注册监听自定义广播
-//        IntentFilter filter = new IntentFilter(Constant.ACTION_USB_PERMISSION);
-//        registerReceiver(UDiskMountedReceiver, filter);
-
-
         mSerialPortManager = new SerialPortManager();
 
 
@@ -117,12 +108,6 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
 
         pump_receive_cmd.setText(msg + originMSg);
 
-        //            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    pump_send_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
-//                }
-//            });
     }
 
     @Override
@@ -151,22 +136,12 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
 
 
 
-
-//            cmdQueue.add(ByteUtils.genHexStr(bytes));
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    pump_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
-//                }
-//            });
         }
 
         @Override
         public void onDataSent(byte[] bytes) {
 //            Log.i(TAG, "onDataSent [ byte[] ]: " + Arrays.toString(bytes));
             Log.e("hugh", "数据下发到设备成功 [ String ]: " + ByteUtils.genHexStr(bytes));
-
-//            probeCmdQueue.add(ByteUtils.genHexStr(bytes));
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -254,45 +229,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
                 .show();
     }
 
-    @OnClick(R.id.pump_query_liquid_level_1)
-    public void pump_query_liquid_level_1(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(1);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位 1] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
 
-    @OnClick(R.id.pump_query_liquid_level_2)
-    public void pump_query_liquid_level_2(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(2);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位 2] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
-    @OnClick(R.id.pump_query_liquid_level_3)
-    public void pump_query_liquid_level_3(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(3);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位 3] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
-    @OnClick(R.id.pump_query_liquid_level_4)
-    public void pump_query_liquid_level_4(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(4);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位 4] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
-    @OnClick(R.id.pump_query_liquid_level_all)
-    public void pump_query_liquid_level(){
-        ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(0);
-        byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发30指令[查询液位 all] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
 
     @OnClick(R.id.pump_query_software_version)
     public void pump_query_software_version(){
@@ -310,22 +247,6 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
         Log.i("hugh", "下发querySnCmd指令[查询序列号] 到设备 = " + ByteUtils.genHexStr(cmd));
     }
 
-    @OnClick(R.id.pump_open_24v)
-    public void pump_open_24v(){
-        ProbeOpen24VCmd open24VCmd = new ProbeOpen24VCmd(1);
-        byte[] cmd = open24VCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发open24VCmd指令[开启 24V] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
-    @OnClick(R.id.pump_open_relay)
-    public void pump_open_relay(){
-        ProbeOpenRelayCmd openRelayCmd = new ProbeOpenRelayCmd(1);
-        byte[] cmd = openRelayCmd.getSendCmd();
-        mSerialPortManager.sendBytes(cmd);
-        Log.i("hugh", "下发openRelayCmd指令[开启继电器] 到设备 = " + ByteUtils.genHexStr(cmd));
-    }
-
     @OnClick(R.id.pump_pre_upgrade)
     public void probe_pre_upgrade(){
         Log.e("hugh" , "点击下发 PumpPreUpgradeEvent 指令 " );
@@ -336,6 +257,76 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     public void probe_upgrade(){
         Log.e("hugh" , "点击下发 PumpUpgradeEvent 指令 " );
         EventBus.getDefault().post(new PumpUpgradeEvent());
+    }
+
+    @OnClick(R.id.pump_upgrade_file_check)
+    public void pump_upgrade_file_check(){
+        Log.e("hugh" , "点击下发 pump_upgrade_file_check 指令 " );
+        PumpUpgradeFileCheckCmd upgradeFileCheckCmd = new PumpUpgradeFileCheckCmd(hoseIndex == 1 ? Hoses.HOSE1 : Hoses.HOSE2);
+        upgradeFileCheckCmd.setUpgradeFileCheckCrc(binAllByteCrc);
+        byte[] cmd = upgradeFileCheckCmd.getSendCmd();
+        mSerialPortManager.sendBytes(cmd);
+        Log.i("hugh", "下发 6C 指令[pump_upgrade_file_check] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    private int binTotalSize = -1;
+    private int binEveryBlockSize = 1024;
+    private int binLastBlockSize = -1;
+    private List<byte[]> binBytes = new ArrayList<>();
+    private int binCurrentUpgradedIndex = -1;
+    byte[] binAllByte;
+    byte[] binAllByteCrc = new byte[2];
+
+    private void loadUpgradeBinInfo() {
+
+        //复位变量
+        binTotalSize = -1;
+        binLastBlockSize = -1;
+        binBytes = new ArrayList<>();
+        binCurrentUpgradedIndex = -1;
+
+        Log.e("hugh", "loadUpgradeBinInfo 处理 Bin 文件");
+        String file = "/storage/udisk/PUMP.bin";
+        Log.w("hugh", "loadUpgradeBinInfo 使用的文件:" + file);
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            binTotalSize = inputStream.available();
+            binAllByte = new byte[binTotalSize];
+            Log.w("hugh", "loadUpgradeBinInfo Bin 文件总长度:" + binTotalSize);
+
+            short index = 0;
+            while (inputStream.available() >= 1024) {
+                byte[] buffer = new byte[1024];
+                inputStream.read(buffer);
+                binBytes.add(buffer);
+                String currentHex = ByteUtils.bytesToHexStr(buffer);
+                Log.w("hugh", "bin 的第" + index + "个的升级数据 " + currentHex);
+                index++;
+            }
+            binLastBlockSize = inputStream.available();
+            byte[] buffer = new byte[binLastBlockSize];
+            inputStream.read(buffer);
+            binBytes.add(buffer);
+            String currentHex = ByteUtils.bytesToHexStr(buffer);
+            Log.w("hugh", "下发第" + index + "个的升级数据 " + currentHex);
+            Log.w("hugh", "总共 " + binBytes.size() + " 个的升级数据 ");
+            inputStream.close();
+
+            Log.w("hugh", "最后一个bin 长度" + binLastBlockSize);
+            int binAllByteIndex = 0;
+            for (int i = 0; i < binBytes.size(); i++) {
+                byte[] item = binBytes.get(i);
+                for (byte b : item) {
+                    binAllByte[binAllByteIndex] = b;
+                    binAllByteIndex++;
+                }
+                Log.w("hugh", "item 长度" + item.length);
+            }
+            Log.w("hugh", "binAllByte 长度" + binAllByteIndex);
+            binAllByteCrc = CRCUtils.getCrcByte(binAllByte);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -351,7 +342,7 @@ public class PumpSerialFunctionActivity extends Activity implements OnOpenSerial
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void preUpgradeEvent(PumpPreUpgradeEvent preUpgradeEvent) {
         Log.e("hugh", "eventbus 接收到 PumpPreUpgradeEvent 指令 ");
-
+        loadUpgradeBinInfo();
         String file = "/storage/udisk/PUMP.bin";
 
         byte [] lengthByte = new byte[2];
