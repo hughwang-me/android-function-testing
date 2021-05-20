@@ -12,7 +12,7 @@ import com.uwjx.function.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ActivityLifeCircleActivity extends Activity {
+public class ActivityLifeCircleActivity extends ActivityLifeCircle_base_Activity {
 
     private final static String TAG = "LifeCircleActivity";
 
@@ -27,35 +27,36 @@ public class ActivityLifeCircleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecircle_layout);
         ButterKnife.bind(this);
+        Log.w(TAG , "ActivityLifeCircleActivity -> onCreate()");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG , "ActivityLifeCircleActivity -> onStart()");
+        Log.w(TAG , "ActivityLifeCircleActivity -> onStart()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG , "ActivityLifeCircleActivity -> onResume()");
+        Log.w(TAG , "ActivityLifeCircleActivity -> onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i(TAG , "ActivityLifeCircleActivity -> onPause()");
+        Log.w(TAG , "ActivityLifeCircleActivity -> onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i(TAG , "ActivityLifeCircleActivity -> onStop()");
+        Log.w(TAG , "ActivityLifeCircleActivity -> onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG , "ActivityLifeCircleActivity -> onDestroy()");
+        Log.w(TAG , "ActivityLifeCircleActivity -> onDestroy()");
     }
 }
