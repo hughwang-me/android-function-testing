@@ -1,6 +1,7 @@
-package com.uwjx.function.activity;
+package com.uwjx.function.activity.lifecircle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,46 +10,45 @@ import androidx.annotation.Nullable;
 import com.uwjx.function.R;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class ActivityLifeCircle_3_Activity extends ActivityLifeCircle_base_Activity {
+public class ActivityLifeCircle_base_Activity extends Activity {
 
-    private final static String TAG = "LifeCircle_3";
-
+    private final static String TAG = "base_Activity";
+ 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lifecircle_3_layout);
-        ButterKnife.bind(this);
-        Log.w(TAG , "LifeCircle_3 -> onCreate()");
+        Log.w(TAG , "base_Activity -> onCreate()");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.w(TAG , "LifeCircle_3 -> onStart()");
+        Log.w(TAG , "base_Activity -> onStart()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.w(TAG , "LifeCircle_3 -> onResume()");
+        Log.w(TAG , "base_Activity -> onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.w(TAG , "LifeCircle_3 -> onPause()");
+        Log.w(TAG , "base_Activity -> onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.w(TAG , "LifeCircle_3 -> onStop()");
+        Log.w(TAG , "base_Activity -> onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.w(TAG , "LifeCircle_3 -> onDestroy()");
+        Log.w(TAG , "base_Activity -> onDestroy()");
     }
 }

@@ -34,9 +34,9 @@
         <activity android:name=".activity.ProbeSerialFunctionActivity"/>
         <activity android:name=".activity.PumpSerialFunctionActivity"/>
 
-        <activity android:name=".activity.ActivityLifeCircleActivity"/>
-        <activity android:name=".activity.ActivityLifeCircle_2_Activity"/>
-        <activity android:name=".activity.ActivityLifeCircle_3_Activity"/>
+        <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity"/>
+        <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity"/>
+        <activity android:name=".activity.lifecircle.ActivityLifeCircle_3_Activity"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService"></service>
         <service android:name=".service.ActiveMqService"

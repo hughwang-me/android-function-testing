@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.uwjx.function.R;
+import com.uwjx.function.activity.lifecircle.ActivityLifeCircleActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

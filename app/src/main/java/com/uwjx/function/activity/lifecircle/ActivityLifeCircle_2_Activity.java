@@ -1,6 +1,5 @@
-package com.uwjx.function.activity;
+package com.uwjx.function.activity.lifecircle;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,51 +11,51 @@ import com.uwjx.function.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ActivityLifeCircleActivity extends ActivityLifeCircle_base_Activity {
+public class ActivityLifeCircle_2_Activity extends ActivityLifeCircle_base_Activity {
 
-    private final static String TAG = "LifeCircleActivity";
+    private final static String TAG = "LifeCircle2";
 
-    @OnClick(R.id.life_circle_btn)
+    @OnClick(R.id.life_circle_2_btn)
     void life_circle_btn(){
-        Intent intent = new Intent(this , ActivityLifeCircle_2_Activity.class);
+        Intent intent = new Intent(this , ActivityLifeCircle_3_Activity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lifecircle_layout);
+        setContentView(R.layout.activity_lifecircle_2_layout);
         ButterKnife.bind(this);
-        Log.w(TAG , "ActivityLifeCircleActivity -> onCreate()");
+        Log.w(TAG , "LifeCircle2 -> onCreate()");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.w(TAG , "ActivityLifeCircleActivity -> onStart()");
+        Log.w(TAG , "LifeCircle2 -> onStart()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.w(TAG , "ActivityLifeCircleActivity -> onResume()");
+        Log.w(TAG , "LifeCircle2 -> onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.w(TAG , "ActivityLifeCircleActivity -> onPause()");
+        Log.w(TAG , "LifeCircle2 -> onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.w(TAG , "ActivityLifeCircleActivity -> onStop()");
+        Log.w(TAG , "LifeCircle2 -> onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.w(TAG , "ActivityLifeCircleActivity -> onDestroy()");
+        Log.w(TAG , "LifeCircle2 -> onDestroy()");
     }
 }
