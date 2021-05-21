@@ -25,11 +25,13 @@ public class SerialMainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout ;
     TextView tips;
+    String pumpOrAtg = "atg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pumpOrAtg = getIntent().getStringExtra("pumpOrAtg");
         linearLayout = findViewById(R.id.linear_layout);
         tips = findViewById(R.id.tips);
 
@@ -89,9 +91,15 @@ public class SerialMainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Device device = (Device)v.getTag();
             Log.w("hugh" , "点击的设备 : " + device.toString());
-            Intent intent = new Intent(getBaseContext(), ProbeSerialFunctionActivity.class);
-            intent.putExtra(ProbeSerialFunctionActivity.DEVICE, device);
-            startActivity(intent);
+            if(pumpOrAtg.equals("atg")){
+                Intent intent = new Intent(getBaseContext(), ProbeSerialFunctionActivity.class);
+                intent.putExtra(ProbeSerialFunctionActivity.DEVICE, device);
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(getBaseContext(), PumpSerialFunctionActivity.class);
+                intent.putExtra(PumpSerialFunctionActivity.DEVICE, device);
+                startActivity(intent);
+            }
         }
     };
 }

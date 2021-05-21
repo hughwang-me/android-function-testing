@@ -14,7 +14,7 @@ public abstract class BaseProbeCmd {
     public byte[] upgradeAddressOffset;//地址偏移
     public byte[] upgradeData;//升级数据
 
-    public byte[] usedCrcCheckData = new byte[2];//升级的CRC校验
+    public byte[] crcCheckData = new byte[2];//升级的CRC校验
 
     public byte  data;//数据
     public byte [] crc = new byte[2];//CRC校验
@@ -65,12 +65,12 @@ public abstract class BaseProbeCmd {
         List<Byte> crc_field = new ArrayList<>();
         list.add(head); //指令头
         list.add(code); //指令码
-        list.add(usedCrcCheckData[0]);//数据
-        list.add(usedCrcCheckData[1]);//数据
+        list.add(crcCheckData[0]);//数据
+        list.add(crcCheckData[1]);//数据
 
         crc_field.add(code); //指令码
-        crc_field.add(usedCrcCheckData[0]);//数据
-        crc_field.add(usedCrcCheckData[1]);//数据
+        crc_field.add(crcCheckData[0]);//数据
+        crc_field.add(crcCheckData[1]);//数据
 
         crc = CRCUtils.getCrcByte(getBytes(crc_field));
         list.add(crc[0]);

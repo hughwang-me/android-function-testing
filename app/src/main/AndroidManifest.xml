@@ -31,12 +31,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ProbeSerialFunctionActivity"/>
-        <activity android:name=".activity.PumpSerialFunctionActivity"/>
 
         <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity"/>
         <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity"/>
         <activity android:name=".activity.lifecircle.ActivityLifeCircle_3_Activity"/>
+        <activity android:name=".activity.SerialMainActivity"/>
+        <activity android:name=".activity.ProbeSerialFunctionActivity"/>
+        <activity android:name=".activity.PumpSerialFunctionActivity"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService"></service>
         <service android:name=".service.ActiveMqService"

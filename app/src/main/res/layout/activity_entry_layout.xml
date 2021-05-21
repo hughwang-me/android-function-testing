@@ -8,5 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/entry_lifecircle"
-        android:text="生命周期"/>
+        android:text="生命周期测试"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/entry_serial_port_atg"
+        android:text="ATG 串口通信测试测试"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/entry_serial_port_pump"
+        android:text="PUMP 串口通信测试测试"/>
 </LinearLayout>

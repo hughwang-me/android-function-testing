@@ -134,15 +134,6 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
             probeCmdQueue.add(ByteUtils.genHexStr(bytes));
 
 
-
-
-//            cmdQueue.add(ByteUtils.genHexStr(bytes));
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    probe_receive_cmd.append(DateUtil.getFormat() + " \t " + ByteUtils.genHexStr(bytes) + "\n");
-//                }
-//            });
         }
 
         @Override

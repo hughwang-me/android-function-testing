@@ -25,4 +25,18 @@ public class EntryActivity extends Activity {
     void entry_lifecircle(){
         startActivity(new Intent(this , ActivityLifeCircleActivity.class));
     }
+
+    @OnClick(R.id.entry_serial_port_atg)
+    void entry_serial_port_atg(){
+        Intent intent = new Intent(this , SerialMainActivity.class);
+        intent.putExtra("pumpOrAtg" , "atg");
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.entry_serial_port_pump)
+    void entry_serial_port_pump(){
+        Intent intent = new Intent(this , SerialMainActivity.class);
+        intent.putExtra("pumpOrAtg" , "pump");
+        startActivity(intent);
+    }
 }
