@@ -13,6 +13,6 @@ public class PumpUpgradeFileCheckCmd extends BasePumpCmd {
 
     @Override
     public byte[] getSendCmd() {
-        return getUpgradeCmd();
+        return getUpgradeFileCheckCmd();
     }
 }
