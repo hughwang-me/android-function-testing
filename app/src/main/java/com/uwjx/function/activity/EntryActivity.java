@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.uwjx.function.R;
 import com.uwjx.function.activity.lifecircle.ActivityLifeCircleActivity;
+import com.uwjx.function.litepad.LitepadActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,6 +21,12 @@ public class EntryActivity extends Activity {
         setContentView(R.layout.activity_entry_layout);
         ButterKnife.bind(this);
     }
+
+    @OnClick(R.id.entry_litepad)
+    void entry_litepad(){
+        startActivity(new Intent(this , LitepadActivity.class));
+    }
+
 
     @OnClick(R.id.entry_lifecircle)
     void entry_lifecircle(){

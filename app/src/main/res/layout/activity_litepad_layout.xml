@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        android:id="@+id/litepad_add"
+        android:text="添加"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        android:id="@+id/litepad_modify"
+        android:text="修改"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        android:id="@+id/litepad_query"
+        android:text="查询"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        android:id="@+id/litepad_query_one"
+        android:text="查询单个"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="100dp"
+        android:id="@+id/litepad_delete"
+        android:text="删除"/>
+</LinearLayout>

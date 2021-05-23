@@ -4,12 +4,17 @@
     android:versionCode="1"
     android:versionName="v1">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.hardware.usb.host" android:required="false" />
-    <uses-feature android:name="android.hardware.usb.host" android:required="true" />
+    <uses-permission
+        android:name="android.hardware.usb.host"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -24,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidfunctiontesting">
+
         <activity android:name=".activity.EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,18 +37,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity" />
+        <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity" />
+        <activity android:name=".activity.lifecircle.ActivityLifeCircle_3_Activity" />
+        <activity android:name=".activity.SerialMainActivity" />
+        <activity android:name=".activity.ProbeSerialFunctionActivity" />
+        <activity android:name=".activity.PumpSerialFunctionActivity" />
+        <activity android:name=".litepad.LitepadActivity"/>
 
-        <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity"/>
-        <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity"/>
-        <activity android:name=".activity.lifecircle.ActivityLifeCircle_3_Activity"/>
-        <activity android:name=".activity.SerialMainActivity"/>
-        <activity android:name=".activity.ProbeSerialFunctionActivity"/>
-        <activity android:name=".activity.PumpSerialFunctionActivity"/>
-
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
-        <service android:name=".service.ActiveMqService"
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service
+            android:name=".service.ActiveMqService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>
