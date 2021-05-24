@@ -1,8 +1,9 @@
 package com.uwjx.function.litepad;
 
+
 import org.litepal.crud.LitePalSupport;
 
-public class Author extends LitePalSupport {
+public class Author  extends LitePalSupport {
 
     private String name;
 

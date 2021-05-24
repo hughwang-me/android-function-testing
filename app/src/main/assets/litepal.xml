@@ -2,9 +2,12 @@
 <litepal>
     <dbname value="function" ></dbname>
 
-    <version value="1" ></version>
+    <version value="4" ></version>
 
     <list>
         <mapping class="com.uwjx.function.litepad.Book"></mapping>
+        <mapping class="com.uwjx.function.litepad.Article"></mapping>
+        <mapping class="com.uwjx.function.litepad.Author"></mapping>
+        <mapping class="com.uwjx.function.litepad.Comment"></mapping>
     </list>
 </litepal>

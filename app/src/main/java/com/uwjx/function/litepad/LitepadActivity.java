@@ -14,6 +14,7 @@ import com.uwjx.function.util.GSonUtil;
 import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -96,13 +97,35 @@ public class LitepadActivity extends Activity {
         author.setAge(12);
         author.setName("王欢");
         author.setCountry("中国");
+        author.save();
+
+        List<Comment> comments = new ArrayList<>();
+
+        Comment comment1 = new Comment();
+        comment1.setDate(new Date());
+        comment1.setContent("描述");
+        comments.add(comment1);
+
+        Comment comment2 = new Comment();
+        comment2.setDate(new Date());
+        comment2.setContent("描述");
+        comments.add(comment2);
+
+        Comment comment3 = new Comment();
+        comment3.setDate(new Date());
+        comment3.setContent("描述");
+        comments.add(comment3);
+
+        LitePal.saveAll(comments);
 
         Article article = new Article();
         article.setTitle("标题");
         article.setCreateDate(new Date());
         article.setSummary("总览");
         article.setAuthor(author);
+        article.setComments(comments);
 
+        article.save();
 
         Log.w("hugh" , "litepad_ref_add:" + GSonUtil.toJsonString(article));
     }

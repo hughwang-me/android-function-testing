@@ -4,7 +4,7 @@ import org.litepal.crud.LitePalSupport;
 
 import java.util.Date;
 
-public class Comment extends LitePalSupport {
+public class Comment  extends LitePalSupport {
 
     private String content;
 
