@@ -45,6 +45,8 @@
         <activity android:name=".activity.PumpSerialFunctionActivity" />
         <activity android:name=".litepad.LitepadActivity"/>
         <activity android:name=".activity.MacSerialPortActivity"/>
+        <activity android:name=".activity.ServiceFunctionActivity"/>
+        <service android:name=".service.ServiceFunctionService"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service

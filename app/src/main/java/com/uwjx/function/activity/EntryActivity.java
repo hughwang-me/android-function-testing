@@ -22,6 +22,12 @@ public class EntryActivity extends Activity {
         ButterKnife.bind(this);
     }
 
+    @OnClick(R.id.service_function)
+    void service_function(){
+        startActivity(new Intent(this , ServiceFunctionActivity.class));
+    }
+
+
     @OnClick(R.id.entry_litepad)
     void entry_litepad(){
         startActivity(new Intent(this , LitepadActivity.class));

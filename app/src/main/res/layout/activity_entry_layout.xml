@@ -31,4 +31,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/mac_serial_port"
         android:text="Mac Serial Port"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/service_function"
+        android:text="服务功能"/>
 </LinearLayout>
