@@ -1,6 +1,7 @@
 package com.uwjx.function.litepad;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,11 +47,15 @@ public class LitepadActivity extends Activity {
     @OnClick(R.id.litepad_delete)
     void litepad_delete(){
         Log.w("hugh" , "@删除@" );
+        LitePal.deleteAll(Book.class , "id > ?" , "3");
     }
 
     @OnClick(R.id.litepad_modify)
     void litepad_modify(){
         Log.w("hugh" , "@修改@" );
+        ContentValues values = new ContentValues();
+        values.put("author" , "王欢");
+        LitePal.updateAll(Book.class , values , "id > ?" , "2");
     }
 
     @OnClick(R.id.litepad_query)
