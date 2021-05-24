@@ -11,6 +11,7 @@ import com.uwjx.function.R;
 import com.uwjx.function.util.GSonUtil;
 
 import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,7 @@ public class LitepadActivity extends Activity {
         List<Book> books = LitePal.findAll(Book.class);
         Gson gson = new Gson();
         for (Book book : books) {
+//            book.get
             Log.w("hugh" , "查询:" + gson.toJson(book));
         }
     }
@@ -65,8 +67,20 @@ public class LitepadActivity extends Activity {
     @OnClick(R.id.litepad_query_one)
     void litepad_query_one(){
         Log.w("hugh" , "@查询@" );
-        Book book = LitePal.find(Book.class , 1);
+        Book book = LitePal.find(Book.class , 2);
         Gson gson = new Gson();
         Log.w("hugh" , "查询:" + gson.toJson(book));
+    }
+
+    @OnClick(R.id.litepad_query_condition)
+    void litepad_query_condition(){
+        Log.w("hugh" , "@查询@" );
+
+        List<Book> books = LitePal.select("name" )
+                .where("id < ?", "4")
+                .order("publishDate desc").limit(2).offset(1)
+                .find(Book.class);
+
+        Log.w("hugh" , "查询:" + GSonUtil.toJsonString(books));
     }
 }
