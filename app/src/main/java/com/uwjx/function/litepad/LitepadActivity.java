@@ -88,4 +88,29 @@ public class LitepadActivity extends Activity {
 
         Log.w("hugh" , "查询:" + GSonUtil.toJsonString(books));
     }
+
+    @OnClick(R.id.litepad_ref_add)
+    void litepad_ref_add(){
+        Log.w("hugh" , "@litepad_ref_add@" );
+        Author author = new Author();
+        author.setAge(12);
+        author.setName("王欢");
+        author.setCountry("中国");
+
+        Article article = new Article();
+        article.setTitle("标题");
+        article.setCreateDate(new Date());
+        article.setSummary("总览");
+        article.setAuthor(author);
+
+
+        Log.w("hugh" , "litepad_ref_add:" + GSonUtil.toJsonString(article));
+    }
+
+    @OnClick(R.id.litepad_ref_query)
+    void litepad_ref_query(){
+        Log.w("hugh" , "@litepad_ref_query@" );
+        List<Article> articles = LitePal.findAll(Article.class);
+        Log.w("hugh" , "litepad_ref_query:" + GSonUtil.toJsonString(articles));
+    }
 }
