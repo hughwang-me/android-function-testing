@@ -46,4 +46,10 @@ public class EntryActivity extends Activity {
         intent.putExtra("pumpOrAtg" , "pump");
         startActivity(intent);
     }
+
+    @OnClick(R.id.mac_serial_port)
+    void mac_serial_port(){
+        Intent intent = new Intent(this , MacSerialPortActivity.class);
+        startActivity(intent);
+    }
 }

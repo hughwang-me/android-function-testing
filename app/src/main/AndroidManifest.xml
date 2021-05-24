@@ -44,6 +44,7 @@
         <activity android:name=".activity.ProbeSerialFunctionActivity" />
         <activity android:name=".activity.PumpSerialFunctionActivity" />
         <activity android:name=".litepad.LitepadActivity"/>
+        <activity android:name=".activity.MacSerialPortActivity"/>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
