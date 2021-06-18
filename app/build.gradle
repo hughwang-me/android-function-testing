@@ -67,4 +67,6 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:support-v4:4.4.1'
 
+    implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
+
 }

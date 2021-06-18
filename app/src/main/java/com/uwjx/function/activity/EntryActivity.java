@@ -58,4 +58,10 @@ public class EntryActivity extends Activity {
         Intent intent = new Intent(this , MacSerialPortActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.excel_export_function)
+    void excel_export_function(){
+        Intent intent = new Intent(this , ExcelActivity.class);
+        startActivity(intent);
+    }
 }

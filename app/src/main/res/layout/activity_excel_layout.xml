@@ -11,52 +11,29 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/entry_lifecircle"
-            android:text="生命周期测试"/>
+            android:id="@+id/excel_export_btn1"
+            android:text="POI导出"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/entry_serial_port_atg"
+            android:id="@+id/excel_export_btn2"
             android:text="ATG 串口通信测试测试"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/entry_serial_port_pump"
+            android:id="@+id/excel_export_btn3"
             android:text="PUMP 串口通信测试测试"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/entry_litepad"
+            android:id="@+id/excel_export_btn4"
             android:text="LitePad 测试"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/mac_serial_port"
-            android:text="Mac Serial Port"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/service_function"
-            android:text="服务功能"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:id="@+id/excel_export_function"
-            android:text="Excel导出"/>
-    </LinearLayout>
 
 
 
