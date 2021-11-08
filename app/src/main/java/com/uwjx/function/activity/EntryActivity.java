@@ -64,4 +64,12 @@ public class EntryActivity extends Activity {
         Intent intent = new Intent(this , ExcelActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.resolution_function)
+    void resolution_function(){
+        Intent intent = new Intent(this , Resolutionctivity.class);
+        startActivity(intent);
+    }
+
+
 }

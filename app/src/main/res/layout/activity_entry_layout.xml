@@ -56,6 +56,12 @@
             android:layout_height="match_parent"
             android:id="@+id/excel_export_function"
             android:text="Excel导出"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/resolution_function"
+            android:text="分辨率获取"/>
     </LinearLayout>
 
 

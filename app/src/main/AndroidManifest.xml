@@ -31,7 +31,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidfunctiontesting">
 
-        <activity android:name=".activity.EntryActivity">
+        <activity android:name="com.uwjx.function.activity.EntryActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +47,7 @@
         <activity android:name=".activity.ProbeSerialFunctionActivity" />
         <activity android:name=".activity.PumpSerialFunctionActivity" />
         <activity android:name=".litepad.LitepadActivity"/>
+        <activity android:name=".activity.Resolutionctivity"/>
         <activity android:name=".activity.MacSerialPortActivity"/>
         <activity android:name=".activity.ServiceFunctionActivity"/>
         <service android:name=".service.ServiceFunctionService"/>
