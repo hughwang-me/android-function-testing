@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.uwjx.function.R;
+import com.uwjx.function.activity.emqx.EmqxActivity;
 import com.uwjx.function.activity.lifecircle.ActivityLifeCircleActivity;
 import com.uwjx.function.litepad.LitepadActivity;
 
@@ -20,6 +21,11 @@ public class EntryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_layout);
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.function_emqx)
+    void function_emqx(){
+        startActivity(new Intent(this , EmqxActivity.class));
     }
 
     @OnClick(R.id.service_function)

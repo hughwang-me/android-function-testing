@@ -40,6 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ExcelActivity"/>
+        <activity android:name=".activity.emqx.EmqxActivity"/>
         <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity" />
         <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity" />
         <activity android:name=".activity.lifecircle.ActivityLifeCircle_3_Activity" />
