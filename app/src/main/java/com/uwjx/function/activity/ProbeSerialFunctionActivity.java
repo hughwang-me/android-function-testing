@@ -115,6 +115,7 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
         super.onStart();
         EventBus.getDefault().register(this);
         probeCmdQueue.startProcess();
+        isStopThread = false;
     }
 
     @Override
@@ -176,6 +177,7 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
             mSerialPortManager.closeSerialPort();
             mSerialPortManager = null;
         }
+        isStopThread = true;
         super.onDestroy();
     }
 
@@ -267,6 +269,28 @@ public class ProbeSerialFunctionActivity extends Activity implements OnOpenSeria
         byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
         mSerialPortManager.sendBytes(cmd);
         Log.i("hugh", "下发30指令[查询液位 all] 到设备 = " + ByteUtils.genHexStr(cmd));
+    }
+
+    private boolean isStopThread = false;
+
+    @OnClick(R.id.probe_query_liquid_level_for)
+    public void probe_query_liquid_level_for(){
+        new Thread(){
+            @Override
+            public void run() {
+                while (!isStopThread){
+                    ProbeQueryLiquidLevelCmd probeQueryLiquidLevelCmd = new ProbeQueryLiquidLevelCmd(0);
+                    byte[] cmd = probeQueryLiquidLevelCmd.getSendCmd();
+                    mSerialPortManager.sendBytes(cmd);
+                    Log.i("hugh", "不停查询下发30指令[查询液位 all] 到设备 = " + ByteUtils.genHexStr(cmd));
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     @OnClick(R.id.probe_query_software_version)

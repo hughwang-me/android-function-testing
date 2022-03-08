@@ -56,6 +56,12 @@
             android:layout_height="wrap_content"
             android:text="probe 查询液位(探针4号)"
             android:id="@+id/probe_query_liquid_level_4"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="不停查询液位"
+            android:id="@+id/probe_query_liquid_level_for"/>
     </LinearLayout>
 
     <LinearLayout
