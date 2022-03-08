@@ -29,6 +29,8 @@ public class EmqxActivity extends Activity {
     @OnClick(R.id.emqx_reg)
     void emqx_reg(){
         Log.w(TAG , "EmqxActivity -> emqx_reg()");
+
+
     }
 
     @Override

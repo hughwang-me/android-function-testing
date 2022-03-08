@@ -51,7 +51,9 @@ public class PumpCmdQueue {
                 StringBuilder full = new StringBuilder();
                 while (isProcess){
                     String cmd = queue.poll();
+                    Log.e("hugh" , "开启cmd queue ----------------------------------- isProcess : " +isProcess );
                     if(cmd != null){
+                        Log.e("hugh" , "开启cmd queue -----------------------------------1111111" );
                         full.append(cmd);
                         Log.w("hugh" , "full 当前状态:" + full.toString());
                         if(full.toString().trim().startsWith("2021") && full.toString().trim().endsWith("2022")){

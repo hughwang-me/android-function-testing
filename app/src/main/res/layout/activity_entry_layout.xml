@@ -78,8 +78,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/function_emqx2"
-            android:text="EMQX2"/>
+            android:id="@+id/function_storage"
+            android:text="Storage"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"

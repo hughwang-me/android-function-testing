@@ -1,11 +1,28 @@
 package com.uwjx.function.service;
 
+import com.github.mjdev.libaums.UsbMassStorageDevice;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
 public class UpgradeService {
 
     public void run(){
+
+//        UsbMassStorageDevice[] devices = UsbMassStorageDevice.getMassStorageDevices(this /* Context or Activity */);
+//
+//        for(UsbMassStorageDevice device: devices) {
+//
+//            // before interacting with a device you need to call init()!
+//            device.init();
+//
+//            // Only uses the first partition on the device
+//            FileSystem currentFs = device.getPartitions().get(0).getFileSystem();
+//            Log.d(TAG, "Capacity: " + currentFs.getCapacity());
+//            Log.d(TAG, "Occupied Space: " + currentFs.getOccupiedSpace());
+//            Log.d(TAG, "Free Space: " + currentFs.getFreeSpace());
+//            Log.d(TAG, "Chunk size: " + currentFs.getChunkSize());
+//        }
 //        BufferedInputStream bufferedInputStream = null;
 //        try {
 //            bufferedInputStream = new BufferedInputStream(new FileInputStream(indexPath));
