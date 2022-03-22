@@ -12,13 +12,14 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:id="@+id/device_id_device_id"
+            android:visibility="invisible"
             android:text="获取设备ID"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="100dp"
             android:id="@+id/device_id_serial_id"
-            android:text="获取Serial Id"/>
+            android:text="获取 ANDROID_ID"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -30,9 +31,15 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:id="@+id/device_id_query_one"
+            android:visibility="invisible"
             android:text="查询单个"/>
     </LinearLayout>
- 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/purple_500"
+        android:id="@+id/device_id_info"/>
 
 
 </LinearLayout>

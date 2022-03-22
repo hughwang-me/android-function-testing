@@ -84,8 +84,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/function_emqx3"
-            android:text="EMQX3"/>
+            android:id="@+id/function_device_id"
+            android:text="设备ID获取"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
