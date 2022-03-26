@@ -47,6 +47,7 @@
         <activity android:name=".activity.ExcelActivity"/>
         <activity android:name=".activity.DeviceIdActivity"/>
         <activity android:name=".activity.StorageActivity"/>
+        <activity android:name=".activity.KeypadActivity"/>
         <activity android:name=".activity.emqx.EmqxActivity"/>
         <activity android:name=".activity.lifecircle.ActivityLifeCircleActivity" />
         <activity android:name=".activity.lifecircle.ActivityLifeCircle_2_Activity" />

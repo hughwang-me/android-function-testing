@@ -90,8 +90,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:id="@+id/function_emqx4"
-            android:text="EMQX4"/>
+            android:id="@+id/function_keypad"
+            android:text="按键测试"/>
     </LinearLayout>
 
 </LinearLayout>

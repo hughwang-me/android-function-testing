@@ -23,6 +23,12 @@ public class EntryActivity extends Activity {
         ButterKnife.bind(this);
     }
 
+    @OnClick(R.id.function_keypad)
+    void function_keypad(){
+        startActivity(new Intent(this , KeypadActivity.class));
+    }
+
+
     @OnClick(R.id.function_device_id)
     void function_device_id(){
         startActivity(new Intent(this , DeviceIdActivity.class));
